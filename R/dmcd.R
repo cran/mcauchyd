@@ -1,12 +1,12 @@
-mvdcd <- function(x, mu, Sigma, tol = 1e-6) {
+dmcd <- function(x, mu, Sigma, tol = 1e-6) {
   #' Density of a Multivariate Cauchy Distribution
   #'
   #' Density of the multivariate (\eqn{p} variables) Cauchy distribution (MCD)
   #' with location parameter \code{mu} and scatter matrix \code{Sigma}.
   #'
-  #' @aliases mvdcd
+  #' @aliases dmcd
   #'
-  #' @usage mvdcd(x, mu, Sigma, tol = 1e-6)
+  #' @usage dmcd(x, mu, Sigma, tol = 1e-6)
   #' @param x length \eqn{p} numeric vector.
   #' @param mu length \eqn{p} numeric vector. The location parameter.
   #' @param Sigma symmetric, positive-definite square matrix of order \eqn{p}. The scatter matrix.
@@ -14,19 +14,19 @@ mvdcd <- function(x, mu, Sigma, tol = 1e-6) {
   #' @return The value of the density.
   #' 
   #' @details The density function of a multivariate Cauchy distribution is given by:
-  #' \deqn{ \displaystyle{ f(x|\mu, \Sigma) = \frac{\Gamma\left(\frac{1+p}{2}\right)}{\pi^{p/2} \Gamma\left(\frac{1}{2}\right) |\Sigma|^\frac{1}{2} \left[ 1 + (x-\mu)^T \Sigma^{-1} (x-\mu) \right]^\frac{1+p}{2}} } }
+  #' \deqn{ \displaystyle{ f(\mathbf{x}|\boldsymbol{\mu}, \Sigma) = \frac{\Gamma\left(\frac{1+p}{2}\right)}{\pi^{p/2} \Gamma\left(\frac{1}{2}\right) |\Sigma|^\frac{1}{2} \left[ 1 + (\mathbf{x}-\boldsymbol{\mu})^T \Sigma^{-1} (\mathbf{x}-\boldsymbol{\mu}) \right]^\frac{1+p}{2}} } }
   #'
   #' @author Pierre Santagostini, Nizar Bouhlel
   #'
-  #' @seealso \code{\link{mvrcd}}: random generation from a MCD.
+  #' @seealso \code{\link{rmcd}}: random generation from a MCD.
   #' 
-  #' \code{\link{plotmvcd}}, \code{\link{contourmvcd}}: plot of a bivariate Cauchy density.
+  #' \code{\link{plotmcd}}, \code{\link{contourmcd}}: plot of a bivariate Cauchy density.
   #'
   #' @examples
   #' mu <- c(0, 1, 4)
   #' sigma <- matrix(c(1, 0.6, 0.2, 0.6, 1, 0.3, 0.2, 0.3, 1), nrow = 3)
-  #' mvdcd(c(0, 1, 4), mu, sigma)
-  #' mvdcd(c(1, 2, 3), mu, sigma)
+  #' dmcd(c(0, 1, 4), mu, sigma)
+  #' dmcd(c(1, 2, 3), mu, sigma)
   #'
   #' @export
 

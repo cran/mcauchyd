@@ -1,6 +1,6 @@
 mu <- rep(0, 3)
 sigma <- matrix(c(1, 0.6, 0.2, 0.6, 1, 0.3, 0.2, 0.3, 1), nrow = 3)
-x <- as.matrix(mvrcd(1000000, mu, sigma))
+x <- as.matrix(rmcd(1000000, mu, sigma))
 apply(x, 2, median)
 
 scal <- numeric(nrow(x))
@@ -8,7 +8,7 @@ for (i in 1:length(scal)) {
   scal[i] <- x[i, , drop = FALSE] %*% solve(sigma) %*% t(x[i, , drop = FALSE])
 }
 
-test_that("mvrcd works", {
+test_that("rmcd works", {
   expect_equal(
     round(apply(x, 2, median), 2),
     mu

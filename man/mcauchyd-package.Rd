@@ -14,9 +14,9 @@ This package provides tools for multivariate Cauchy distributions (MCD):
 }
 \item Tools for MCD:
 \itemize{
-\item Probability density: \code{\link{mvdcd}}
-\item Simulation from a MCD: \code{\link{mvrcd}}
-\item Plot of the density of a MCD with 2 variables: \code{\link{plotmvcd}}, \code{\link{contourmvcd}}
+\item Probability density: \code{\link{dmcd}}
+\item Simulation from a MCD: \code{\link{rmcd}}
+\item Plot of the density of a MCD with 2 variables: \code{\link{plotmcd}}, \code{\link{contourmcd}}
 }
 }
 }

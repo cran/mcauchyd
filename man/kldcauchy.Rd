@@ -4,18 +4,18 @@
 \alias{kldcauchy}
 \title{Kullback-Leibler Divergence between Centered Multivariate Cauchy Distributions}
 \usage{
-kldcauchy(sigma1, sigma2, eps = 1e-06)
+kldcauchy(Sigma1, Sigma2, eps = 1e-06)
 }
 \arguments{
-\item{sigma1}{symmetric, positive-definite matrix. The scatter matrix of the first distribution.}
+\item{Sigma1}{symmetric, positive-definite matrix. The scatter matrix of the first distribution.}
 
-\item{sigma2}{symmetric, positive-definite matrix. The scatter matrix of the second distribution.}
+\item{Sigma2}{symmetric, positive-definite matrix. The scatter matrix of the second distribution.}
 
-\item{eps}{numeric. Precision for the computation. Default: 1e-06.}
+\item{eps}{numeric. Precision for the computation of the partial derivative of the Lauricella \eqn{D}-hypergeometric function (see Details). Default: 1e-06.}
 }
 \value{
 A  numeric value: the Kullback-Leibler divergence between the two distributions,
-with two attributes \code{attr(, "epsilon")} (precision of the result)
+with two attributes \code{attr(, "epsilon")} (precision of the partial derivative of the Lauricella \eqn{D}-hypergeometric function,see Details)
 and \code{attr(, "k")} (number of iterations).
 }
 \description{
@@ -54,17 +54,17 @@ The computation of the partial derivative uses the \code{\link{pochhammer}} func
 }
 \examples{
 \donttest{
-sigma1 <- matrix(c(1, 0.6, 0.2, 0.6, 1, 0.3, 0.2, 0.3, 1), nrow = 3)
-sigma2 <- matrix(c(1, 0.3, 0.1, 0.3, 1, 0.4, 0.1, 0.4, 1), nrow = 3)
-kldcauchy(sigma1, sigma2)
-kldcauchy(sigma2, sigma1)
+Sigma1 <- matrix(c(1, 0.6, 0.2, 0.6, 1, 0.3, 0.2, 0.3, 1), nrow = 3)
+Sigma2 <- matrix(c(1, 0.3, 0.1, 0.3, 1, 0.4, 0.1, 0.4, 1), nrow = 3)
+kldcauchy(Sigma1, Sigma2)
+kldcauchy(Sigma2, Sigma1)
 
-sigma1 <- matrix(c(0.5, 0, 0, 0, 0.4, 0, 0, 0, 0.3), nrow = 3)
-sigma2 <- diag(1, 3)
-# Case when all eigenvalues of sigma1 \%*\% solve(sigma2) are < 1
-kldcauchy(sigma1, sigma2)
-# Case when all eigenvalues of sigma1 \%*\% solve(sigma2) are > 1
-kldcauchy(sigma2, sigma1)
+Sigma1 <- matrix(c(0.5, 0, 0, 0, 0.4, 0, 0, 0, 0.3), nrow = 3)
+Sigma2 <- diag(1, 3)
+# Case when all eigenvalues of Sigma1 \%*\% solve(Sigma2) are < 1
+kldcauchy(Sigma1, Sigma2)
+# Case when all eigenvalues of Sigma1 \%*\% solve(Sigma2) are > 1
+kldcauchy(Sigma2, Sigma1)
 }
 
 }

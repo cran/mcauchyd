@@ -1,4 +1,4 @@
-kldcauchy <- function(sigma1, sigma2, eps = 1e-06) {
+kldcauchy <- function(Sigma1, Sigma2, eps = 1e-06) {
   #' Kullback-Leibler Divergence between Centered Multivariate Cauchy Distributions
   #'
   #' Computes the Kullback-Leibler divergence between two random vectors distributed
@@ -6,12 +6,12 @@ kldcauchy <- function(sigma1, sigma2, eps = 1e-06) {
   #'
   #' @aliases kldcauchy
   #'
-  #' @usage kldcauchy(sigma1, sigma2, eps = 1e-06)
-  #' @param sigma1 symmetric, positive-definite matrix. The scatter matrix of the first distribution.
-  #' @param sigma2 symmetric, positive-definite matrix. The scatter matrix of the second distribution.
-  #' @param eps numeric. Precision for the computation. Default: 1e-06.
+  #' @usage kldcauchy(Sigma1, Sigma2, eps = 1e-06)
+  #' @param Sigma1 symmetric, positive-definite matrix. The scatter matrix of the first distribution.
+  #' @param Sigma2 symmetric, positive-definite matrix. The scatter matrix of the second distribution.
+  #' @param eps numeric. Precision for the computation of the partial derivative of the Lauricella \eqn{D}-hypergeometric function (see Details). Default: 1e-06.
   #' @return A  numeric value: the Kullback-Leibler divergence between the two distributions,
-  #' with two attributes \code{attr(, "epsilon")} (precision of the result) 
+  #' with two attributes \code{attr(, "epsilon")} (precision of the partial derivative of the Lauricella \eqn{D}-hypergeometric function,see Details)
   #' and \code{attr(, "k")} (number of iterations).
   #'
   #' @details Given \eqn{X_1}, a random vector of \eqn{R^p} distributed according to the MCD
@@ -50,50 +50,50 @@ kldcauchy <- function(sigma1, sigma2, eps = 1e-06) {
   #'
   #' @examples
   #' \donttest{
-  #' sigma1 <- matrix(c(1, 0.6, 0.2, 0.6, 1, 0.3, 0.2, 0.3, 1), nrow = 3)
-  #' sigma2 <- matrix(c(1, 0.3, 0.1, 0.3, 1, 0.4, 0.1, 0.4, 1), nrow = 3)
-  #' kldcauchy(sigma1, sigma2)
-  #' kldcauchy(sigma2, sigma1)
+  #' Sigma1 <- matrix(c(1, 0.6, 0.2, 0.6, 1, 0.3, 0.2, 0.3, 1), nrow = 3)
+  #' Sigma2 <- matrix(c(1, 0.3, 0.1, 0.3, 1, 0.4, 0.1, 0.4, 1), nrow = 3)
+  #' kldcauchy(Sigma1, Sigma2)
+  #' kldcauchy(Sigma2, Sigma1)
   #' 
-  #' sigma1 <- matrix(c(0.5, 0, 0, 0, 0.4, 0, 0, 0, 0.3), nrow = 3)
-  #' sigma2 <- diag(1, 3)
-  #' # Case when all eigenvalues of sigma1 %*% solve(sigma2) are < 1
-  #' kldcauchy(sigma1, sigma2)
-  #' # Case when all eigenvalues of sigma1 %*% solve(sigma2) are > 1
-  #' kldcauchy(sigma2, sigma1)
+  #' Sigma1 <- matrix(c(0.5, 0, 0, 0, 0.4, 0, 0, 0, 0.3), nrow = 3)
+  #' Sigma2 <- diag(1, 3)
+  #' # Case when all eigenvalues of Sigma1 %*% solve(Sigma2) are < 1
+  #' kldcauchy(Sigma1, Sigma2)
+  #' # Case when all eigenvalues of Sigma1 %*% solve(Sigma2) are > 1
+  #' kldcauchy(Sigma2, Sigma1)
   #' }
   #' 
   #' @export
   
-  # sigma1 and Sigma2 must be matrices
-  if (is.numeric(sigma1) & !is.matrix(sigma1))
-    sigma1 <- matrix(sigma1)
-  if (is.numeric(sigma2) & !is.matrix(sigma2))
-    sigma2 <- matrix(sigma2)
+  # Sigma1 and Sigma2 must be matrices
+  if (is.numeric(Sigma1) & !is.matrix(Sigma1))
+    Sigma1 <- matrix(Sigma1)
+  if (is.numeric(Sigma2) & !is.matrix(Sigma2))
+    Sigma2 <- matrix(Sigma2)
   
   # Number of variables
-  p <- nrow(sigma1)
+  p <- nrow(Sigma1)
   
-  # sigma1 and sigma2 must be square matrices with the same size
-  if (ncol(sigma1) != p | nrow(sigma2) != p | ncol(sigma2) != p)
-    stop("sigma1 et sigma2 doivent must be square matrices with rank p.")
+  # Sigma1 and Sigma2 must be square matrices with the same size
+  if (ncol(Sigma1) != p | nrow(Sigma2) != p | ncol(Sigma2) != p)
+    stop("Sigma1 et Sigma2 must be square matrices with rank p.")
   
-  # IS sigma1 symmetric, positive-definite?
-  if (!isSymmetric(sigma1))
-    stop("sigma1 must be a symmetric, positive-definite matrix.")
-  lambda1 <- eigen(sigma1, only.values = TRUE)$values
+  # IS Sigma1 symmetric, positive-definite?
+  if (!isSymmetric(Sigma1))
+    stop("Sigma1 must be a symmetric, positive-definite matrix.")
+  lambda1 <- eigen(Sigma1, only.values = TRUE)$values
   if (any(lambda1 < .Machine$double.eps))
-    stop("sigma1 must be a symmetric, positive-definite matrix.")
+    stop("Sigma1 must be a symmetric, positive-definite matrix.")
   
-  # IS sigma2 symmetric, positive-definite?
-  if (!isSymmetric(sigma2))
-    stop("sigma2 must be a symmetric, positive-definite matrix.")
-  lambda2 <- eigen(sigma2, only.values = TRUE)$values
+  # IS Sigma2 symmetric, positive-definite?
+  if (!isSymmetric(Sigma2))
+    stop("Sigma2 must be a symmetric, positive-definite matrix.")
+  lambda2 <- eigen(Sigma2, only.values = TRUE)$values
   if (any(lambda2 < .Machine$double.eps))
-    stop("sigma2 must be a symmetric, positive-definite matrix.")
+    stop("Sigma2 must be a symmetric, positive-definite matrix.")
   
-  # Eigenvalues of sigma1 %*% inv(sigma2)
-  lambda <- sort(eigen(sigma1 %*% solve(sigma2), only.values = TRUE)$values, decreasing = FALSE)
+  # Eigenvalues of Sigma1 %*% inv(Sigma2)
+  lambda <- sort(eigen(Sigma1 %*% solve(Sigma2), only.values = TRUE)$values, decreasing = FALSE)
   
   prodlambda <- prod(lambda)
   
@@ -214,11 +214,13 @@ kldcauchy <- function(sigma1, sigma2, eps = 1e-06) {
     # Next elements of the sum, until the expected precision
     k1 <- 1:k
     derive <- 0
+    # vd <- vderive <- numeric()
     while (abs(d) > eps/10 & !is.nan(d)) {
       epsret <- signif(abs(d), 1)*10
       k <- k1[length(k1)]
       k1 <- k + (1:kstep)
       derive <- derive + d
+      # vd <- c(vd, d); vderive <- c(vderive, derive)
       
       # M: data.frame of the indices for the nested sums
       M <- as.data.frame(matrix(nrow = 0, ncol = p))
