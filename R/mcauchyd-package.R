@@ -22,5 +22,7 @@
 #' @references N. Bouhlel, D. Rousseau, A Generic Formula and Some Special Cases for the Kullback–Leibler Divergence between Central Multivariate Cauchy Distributions.
 #' Entropy, 24, 838, July 2022.
 #' \doi{10.3390/e24060838}
-#' 
+#' #' @keywords internal 
+"_PACKAGE"
+
 NULL

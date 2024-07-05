@@ -69,3 +69,24 @@ test_that("kl works (dim 3)", {
     -3/2*log(lambda) + 4*log(0.5 + sqrt(lambda)/2) - 2*((1 - sqrt(lambda))/(1 + sqrt(lambda)))
   )
 })
+
+# Dimension p = 4
+Sigma1 <- diag(1, 4)
+Sigma2 <- matrix(c(0.5, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0.3, 0, 0, 0, 0, 0.2), nrow = 4)
+
+kl4.12 <- kldcauchy(Sigma1, Sigma2, eps = 1e-6)
+kl4.21 <- kldcauchy(Sigma2, Sigma1, eps = 1e-6)
+
+test_that("kl12 works (dim 4)", {
+  expect_equal(
+    round(as.numeric(kl4.12), 16),
+    0.2450457876729235
+  )
+})
+
+test_that("kl21 works (dim 4)", {
+  expect_equal(
+    round(as.numeric(kl4.21), 16),
+    0.2631143574988659
+  )
+})

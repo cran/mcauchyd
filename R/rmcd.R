@@ -17,7 +17,7 @@ rmcd <- function(n, mu, Sigma, tol = 1e-6) {
   #' can be generated using:
   #' \deqn{\displaystyle{\mathbf{X} = \boldsymbol{\mu} + \frac{\mathbf{Y}}{\sqrt{u}}}}
   #' where \eqn{\mathbf{Y}} is a random vector distributed among a centered Gaussian density
-  #' with covariance matrix \eqn{\Sigma} (generated using \code{\link{mvrnorm}})
+  #' with covariance matrix \eqn{\Sigma} (generated using \code{\link[MASS]{mvrnorm}})
   #' and \eqn{u} is distributed among a Chi-squared distribution with 1 degree of freedom.
   #'
   #' @author Pierre Santagostini, Nizar Bouhlel
